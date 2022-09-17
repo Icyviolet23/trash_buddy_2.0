@@ -17,13 +17,15 @@ import 'package:progress_state_button/progress_button.dart';
 import 'favorites_list_view.dart';
 import 'models/Achievement.dart';
 
+import 'dart:io';
+
 class DesignCourseHomeScreen extends StatefulWidget {
   @override
   _DesignCourseHomeScreenState createState() => _DesignCourseHomeScreenState();
 }
 
 class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
-  CategoryType categoryType = CategoryType.scan;
+  CategoryType categoryType = CategoryType.leaderboard;
   XFile? image;
 
   Set<String> selected = Set();
@@ -51,7 +53,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
             Expanded(
               child: SingleChildScrollView(
                 child: Container(
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height * 1.53,
                   child: Column(
                     children: <Widget>[
                       getCategoryUI(),
@@ -179,6 +181,20 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          image != null ? AspectRatio(
+            aspectRatio: 1.5,
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: FileImage(File(this.image!.path)),
+                  fit: BoxFit.fitWidth,
+                  alignment: FractionalOffset.center,
+                ),
+                borderRadius: BorderRadius.circular(20)
+              ),
+            ),
+          ) : SizedBox(height: 0,),
+          SizedBox(height: 10,),
           Text(
             'Bins Near Me',
             textAlign: TextAlign.center,
@@ -189,6 +205,31 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
               color: DesignCourseAppTheme.darkerText,
             ),
           ),
+          SizedBox(height: 10,),
+          AspectRatio(
+            aspectRatio: 1.6,
+            child: Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/design_course/binmap2.png"),
+                      fit: BoxFit.fill
+                  ),
+                  borderRadius: BorderRadius.circular(20)
+              ),
+            ),
+          ),
+          SizedBox(height: 10,),
+          Text(
+            'Recycling Instructions',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 25,
+              letterSpacing: 0.27,
+              color: DesignCourseAppTheme.darkerText,
+            ),
+          ),
+          SizedBox(height: 10,),
           Flexible(
             child: ProgressButtonHomePage(
               title : "Click Below to Scan!",
@@ -325,7 +366,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            width: MediaQuery.of(context).size.width * 0.75,
+            width: MediaQuery.of(context).size.width,
             height: 64,
             child: Padding(
               padding: const EdgeInsets.only(top: 8, bottom: 8),
@@ -542,28 +583,23 @@ class _ProgressButtonHomePageState extends State<ProgressButtonHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+    return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            imageState ? Image.asset("assets/design_course/binmap2.png") :
-
             Container(
                 height: 300,
                 child : ListView (
                     scrollDirection: Axis.horizontal,
                   children: [Image.asset("assets/design_course/PET1.png"), Image.asset("assets/design_course/facts2.png")]
-
                 )
             ),
             Container(
-              height: 25
+              height: 10
             ),
             buildTextWithIcon()
           ],
         ),
-      ),
     );
   }
 
@@ -715,37 +751,35 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: _isCameraInitialized ? Column(
-          children: [
-            SizedBox(height: 10,),
-            AspectRatio(
-              aspectRatio: 1 / controller!.value.aspectRatio,
-              child: controller!.buildPreview(),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: _isCameraInitialized ? Column(
+        children: [
+          SizedBox(height: 10,),
+          AspectRatio(
+            aspectRatio: 1 / controller!.value.aspectRatio,
+            child: controller!.buildPreview(),
+          ),
+          SizedBox(height: 5,),
+          InkWell(
+            customBorder: CircleBorder(),
+            onTap: () async {
+              XFile? rawImage = await takePicture();
+              widget.callBack(rawImage);
+              Navigator.pop(context);
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Icon(Icons.circle, color: Colors.white38, size: 70),
+                Icon(Icons.circle, color: Colors.white, size: 50),
+              ],
             ),
-            SizedBox(height: 10,),
-            InkWell(
-              customBorder: CircleBorder(),
-              onTap: () async {
-                XFile? rawImage = await takePicture();
-                widget.callBack(rawImage);
-                Navigator.pop(context);
-              },
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Icon(Icons.circle, color: Colors.white38, size: 80),
-                  Icon(Icons.circle, color: Colors.white, size: 65)
-                ],
-              ),
-            )
-          ],
-        ) : Center(
-          child: CircularProgressIndicator(),
-        )
-      ),
+          )
+        ],
+      ) : Center(
+        child: CircularProgressIndicator(),
+      )
     );
   }
 
