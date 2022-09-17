@@ -6,7 +6,9 @@ import 'package:best_flutter_ui_templates/design_course/popular_course_list_view
 import 'package:best_flutter_ui_templates/design_course/leaderboard_list_view.dart';
 import 'package:best_flutter_ui_templates/design_course/models/person.dart';
 import 'package:best_flutter_ui_templates/main.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'design_course_app_theme.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
@@ -20,6 +22,7 @@ class DesignCourseHomeScreen extends StatefulWidget {
 
 class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
   CategoryType categoryType = CategoryType.scan;
+  XFile? image;
 
   Set<String> selected = Set();
 
@@ -172,7 +175,9 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
             ),
           ),
           Flexible(
-            child: ProgressButtonHomePage (title : "Click Below to Scan!"),
+            child: ProgressButtonHomePage(
+              title : "Click Below to Scan!",
+            ),
           )
         ],
       ),
@@ -252,6 +257,14 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
               setState(() {
                 categoryType = categoryTypeData;
               });
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CameraScreen((var image) {
+                    setState(() {
+                      this.image = image;
+                    });
+                  }))
+              );
             },
             child: Padding(
               padding: const EdgeInsets.only(
@@ -482,7 +495,8 @@ class _ProgressButtonHomePageState extends State<ProgressButtonHomePage> {
       ButtonState.idle: IconedButton(
           text: "Redeem!",
           icon: Icon(Icons.monochrome_photos_sharp, color: Colors.white),
-          color: Colors.deepPurple.shade500),
+          color: Colors.deepPurple.shade500,
+      ),
       ButtonState.loading:
       IconedButton(text: "Loading", color: Colors.deepPurple.shade700),
       ButtonState.fail: IconedButton(
@@ -497,32 +511,6 @@ class _ProgressButtonHomePageState extends State<ProgressButtonHomePage> {
           ),
           color: Colors.green.shade400)
     }, onPressed: onPressedIconWithText, state: stateTextWithIcon);
-  }
-
-  Widget buildTextWithIconWithMinState() {
-    return ProgressButton.icon(
-      iconedButtons: {
-        ButtonState.idle: IconedButton(
-            text: "Send",
-            icon: Icon(Icons.send, color: Colors.white),
-            color: Colors.deepPurple.shade500),
-        ButtonState.loading:
-        IconedButton(text: "Loading", color: Colors.deepPurple.shade700),
-        ButtonState.fail: IconedButton(
-            text: "Failed",
-            icon: Icon(Icons.cancel, color: Colors.white),
-            color: Colors.red.shade300),
-        ButtonState.success: IconedButton(
-            icon: Icon(
-              Icons.check_circle,
-              color: Colors.white,
-            ),
-            color: Colors.green.shade400)
-      },
-      onPressed: onPressedIconWithMinWidthStateText,
-      state: stateTextWithIconMinWidthState,
-      minWidthStates: [ButtonState.loading, ButtonState.success],
-    );
   }
 
   @override
@@ -590,7 +578,6 @@ class _ProgressButtonHomePageState extends State<ProgressButtonHomePage> {
     });
   }
 
-
   void onPressedIconWithText() async {
     switch (stateTextWithIcon) {
       case ButtonState.idle:
@@ -602,7 +589,7 @@ class _ProgressButtonHomePageState extends State<ProgressButtonHomePage> {
                 : ButtonState.success;
           });
         });
-
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ScanQrPage()));
         imageState = !imageState;
 
         break;
@@ -619,33 +606,6 @@ class _ProgressButtonHomePageState extends State<ProgressButtonHomePage> {
       stateTextWithIcon = stateTextWithIcon;
     });
   }
-
-  void onPressedIconWithMinWidthStateText() {
-    switch (stateTextWithIconMinWidthState) {
-      case ButtonState.idle:
-        stateTextWithIconMinWidthState = ButtonState.loading;
-        Future.delayed(Duration(seconds: 1), () {
-          setState(() {
-            stateTextWithIconMinWidthState = Random.secure().nextBool()
-                ? ButtonState.success
-                : ButtonState.fail;
-          });
-        });
-
-        break;
-      case ButtonState.loading:
-        break;
-      case ButtonState.success:
-        stateTextWithIconMinWidthState = ButtonState.idle;
-        break;
-      case ButtonState.fail:
-        stateTextWithIconMinWidthState = ButtonState.idle;
-        break;
-    }
-    setState(() {
-      stateTextWithIconMinWidthState = stateTextWithIconMinWidthState;
-    });
-  }
 }
 
 enum CategoryType {
@@ -653,3 +613,176 @@ enum CategoryType {
   leaderboard,
   achievements,
 }
+
+class CameraScreen extends StatefulWidget {
+  @override
+  State<CameraScreen> createState() => _CameraScreenState();
+
+  final void Function(XFile? image) callBack;
+  CameraScreen(this.callBack);
+}
+
+class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver {
+  CameraController? controller;
+  bool _isCameraInitialized = false;
+
+  void onNewCameraSelected(CameraDescription cameraDescription) async {
+    final previousCameraController = controller;
+    // Instantiating the camera controller
+    final CameraController cameraController = CameraController(
+      cameraDescription,
+      ResolutionPreset.high,
+      imageFormatGroup: ImageFormatGroup.jpeg,
+    );
+
+    // Dispose the previous controller
+    await previousCameraController?.dispose();
+
+    // Replace with the new controller
+    if (mounted) {
+      setState(() {
+        controller = cameraController;
+      });
+    }
+
+    // Update UI if controller updated
+    cameraController.addListener(() {
+      if (mounted) setState(() {});
+    });
+
+    // Initialize controller
+    try {
+      await cameraController.initialize();
+    } on Exception catch (e) {
+      print('Error initializing camera: $e');
+    }
+
+    // Update the Boolean
+    if (mounted) {
+      setState(() {
+        _isCameraInitialized = controller!.value.isInitialized;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    onNewCameraSelected(cameras[0]);
+    super.initState();
+  }
+
+  Future<XFile?> takePicture() async {
+    final CameraController? cameraController = controller;
+    if (cameraController!.value.isTakingPicture) {
+      // A capture is already pending, do nothing.
+      return null;
+    }
+    try {
+      XFile file = await cameraController.takePicture();
+      return file;
+    } on Exception catch (e) {
+      print('Error occured while taking picture: $e');
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: _isCameraInitialized ? Column(
+          children: [
+            SizedBox(height: 10,),
+            AspectRatio(
+              aspectRatio: 1 / controller!.value.aspectRatio,
+              child: controller!.buildPreview(),
+            ),
+            SizedBox(height: 10,),
+            InkWell(
+              customBorder: CircleBorder(),
+              onTap: () async {
+                XFile? rawImage = await takePicture();
+                widget.callBack(rawImage);
+                Navigator.pop(context);
+              },
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Icon(Icons.circle, color: Colors.white38, size: 80),
+                  Icon(Icons.circle, color: Colors.white, size: 65)
+                ],
+              ),
+            )
+          ],
+        ) : Center(
+          child: CircularProgressIndicator(),
+        )
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
+}
+
+class ScanQrPage extends StatefulWidget {
+  @override
+  State<ScanQrPage> createState() => _ScanQrPageState();
+}
+
+class _ScanQrPageState extends State<ScanQrPage> {
+  Barcode? result;
+  QRViewController? controller;
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  void _onQRViewCreated(QRViewController controller) {
+    setState(() => this.controller = controller);
+    controller.scannedDataStream.listen((scanData) {
+      setState(() => result = scanData);
+    });
+  }
+  // In order to get hot reload to work we need to pause the camera if the platform
+  // is android, or resume the camera if the platform is iOS.
+  @override
+  void reassemble() {
+    super.reassemble();
+    controller!.pauseCamera();
+  }
+
+  void readQr() async {
+    if (result != null) {
+      controller!.pauseCamera();
+      print(result!.code);
+      controller!.dispose();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    readQr();
+    return Scaffold(
+      body: QRView(
+        key: qrKey,
+        onQRViewCreated: _onQRViewCreated,
+        overlay: QrScannerOverlayShape(
+          borderColor: Colors.orange,
+          borderRadius: 10,
+          borderLength: 30,
+          borderWidth: 10,
+          cutOutSize: 250,
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
+}
+
