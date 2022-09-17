@@ -146,7 +146,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Bins Near Me!',
+            'Bins Near Me',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: FontWeight.w600,
@@ -383,6 +383,7 @@ class _ProgressButtonHomePageState extends State<ProgressButtonHomePage> {
   ButtonState stateOnlyCustomIndicatorText = ButtonState.idle;
   ButtonState stateTextWithIcon = ButtonState.idle;
   ButtonState stateTextWithIconMinWidthState = ButtonState.idle;
+  bool imageState = true;
 
   Widget buildCustomButton() {
     var progressTextButton = ProgressButton(
@@ -506,9 +507,14 @@ class _ProgressButtonHomePageState extends State<ProgressButtonHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Image.asset("assets/design_course/binmap2.png"),
+            imageState ? Image.asset("assets/design_course/binmap2.png") :
+
             Container(
-              height: 30
+                height: 300,
+                child : Image.asset("assets/design_course/bottle_facts.jpg")
+            ),
+            Container(
+              height: 25
             ),
             buildTextWithIcon()
           ],
@@ -567,6 +573,8 @@ class _ProgressButtonHomePageState extends State<ProgressButtonHomePage> {
                 : ButtonState.success;
           });
         });
+
+        imageState = !imageState;
 
         break;
       case ButtonState.loading:
