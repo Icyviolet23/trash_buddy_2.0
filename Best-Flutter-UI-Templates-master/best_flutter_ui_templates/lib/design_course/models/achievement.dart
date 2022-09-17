@@ -35,7 +35,7 @@ class Achievement {
     ),
     Achievement(
         name: 'No CAP',
-        title: '57/80 Bottle Caps removed',
+        title: '57/80 caps removed',
         picture: 'assets/design_course/cap.png',
         description: "Bottle caps cant be recycled! Take them off before recycling! No cap :)",
         rank: 3,
