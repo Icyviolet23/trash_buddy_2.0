@@ -9,6 +9,7 @@ import 'package:best_flutter_ui_templates/design_course/models/person.dart';
 import 'package:best_flutter_ui_templates/main.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'design_course_app_theme.dart';
 import 'package:progress_state_button/iconed_button.dart';
@@ -53,7 +54,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
             Expanded(
               child: SingleChildScrollView(
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 1.53,
+                  height: MediaQuery.of(context).size.height * 1.57,
                   child: Column(
                     children: <Widget>[
                       getCategoryUI(),
@@ -181,6 +182,37 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          image != null ? Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Identified:',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w200,
+                    fontSize: 15,
+                    letterSpacing: 0.27,
+                    color: DesignCourseAppTheme.grey,
+                  ),
+                ),
+                Text(
+                  'Plastic bottle',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 25,
+                    letterSpacing: 0.27,
+                    color: DesignCourseAppTheme.nearlyBlack,
+                  ),
+                ),
+              ],
+            ),
+          ) : SizedBox(height: 0,),
+          SizedBox(height: 10,),
           image != null ? AspectRatio(
             aspectRatio: 1.5,
             child: Container(
@@ -765,6 +797,9 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
             customBorder: CircleBorder(),
             onTap: () async {
               XFile? rawImage = await takePicture();
+              context.loaderOverlay.show();
+              sleep(Duration(seconds:1));
+              context.loaderOverlay.hide();
               widget.callBack(rawImage);
               Navigator.pop(context);
             },

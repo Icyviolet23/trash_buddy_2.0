@@ -3,6 +3,7 @@ import 'package:best_flutter_ui_templates/app_theme.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'design_course/home_design_course.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -37,7 +38,9 @@ class MyApp extends StatelessWidget {
         textTheme: AppTheme.textTheme,
         platform: TargetPlatform.iOS,
       ),
-      home: DesignCourseHomeScreen(),
+      home: LoaderOverlay(
+        child: DesignCourseHomeScreen(),
+      )
     );
   }
 }
