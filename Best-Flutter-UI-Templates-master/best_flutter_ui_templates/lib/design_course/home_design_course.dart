@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:best_flutter_ui_templates/design_course/AchievementInfoScreen.dart';
+import 'package:best_flutter_ui_templates/design_course/AchievementListView.dart';
+import 'package:best_flutter_ui_templates/design_course/category_list_view.dart';
 import 'package:best_flutter_ui_templates/design_course/course_info_screen.dart';
 import 'package:best_flutter_ui_templates/design_course/person_info_screen.dart';
 import 'package:best_flutter_ui_templates/design_course/popular_course_list_view.dart';
@@ -14,6 +17,7 @@ import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
 
 import 'favorites_list_view.dart';
+import 'models/Achievement.dart';
 
 class DesignCourseHomeScreen extends StatefulWidget {
   @override
@@ -202,9 +206,10 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
             ),
           ),
           Flexible(
-            child: PopularCourseListView(
-              callBack: () {
-                moveTo();
+            child: AchievementListView(
+              callBack: (Achievement? achievement) {
+                if (achievement != null)
+                  moveToAchievement(achievement);
               },
             ),
           )
@@ -218,6 +223,15 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
       context,
       MaterialPageRoute<dynamic>(
         builder: (BuildContext context) => CourseInfoScreen(),
+      ),
+    );
+  }
+
+  void moveToAchievement(Achievement achievement) {
+    Navigator.push<dynamic>(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => AchievementInfoScreen(achievement, selected.contains(achievement.name), toggleSelected),
       ),
     );
   }
@@ -383,7 +397,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
                 //   ),
                 // ),
                 Text(
-                  'Trash Buddy',
+                  'No CAP',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,

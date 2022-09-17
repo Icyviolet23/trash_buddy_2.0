@@ -1,19 +1,19 @@
 import 'package:best_flutter_ui_templates/design_course/design_course_app_theme.dart';
-import 'package:best_flutter_ui_templates/design_course/models/category.dart';
 import 'package:best_flutter_ui_templates/main.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-class PopularCourseListView extends StatefulWidget {
-  const PopularCourseListView({Key? key, this.callBack}) : super(key: key);
+import 'models/Achievement.dart';
 
-  final Function()? callBack;
+class AchievementListView extends StatefulWidget {
+  final void Function(Achievement?)? callBack;
+
+  const AchievementListView({Key? key, this.callBack}) : super(key: key);
+
   @override
-  _PopularCourseListViewState createState() => _PopularCourseListViewState();
+  _AchievementListViewState createState() => _AchievementListViewState();
 }
 
-class _PopularCourseListViewState extends State<PopularCourseListView>
+class _AchievementListViewState extends State<AchievementListView>
     with TickerProviderStateMixin {
   AnimationController? animationController;
   @override
@@ -43,9 +43,9 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               children: List<Widget>.generate(
-                Category.popularCourseList.length,
+                Achievement.achievementList.length,
                     (int index) {
-                  final int count = Category.popularCourseList.length;
+                  final int count = Achievement.achievementList.length;
                   final Animation<double> animation =
                   Tween<double>(begin: 0.0, end: 1.0).animate(
                     CurvedAnimation(
@@ -55,9 +55,9 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
                     ),
                   );
                   animationController?.forward();
-                  return CategoryView(
+                  return AchievementView(
                     callback: widget.callBack,
-                    category: Category.popularCourseList[index],
+                    achievement: Achievement.achievementList[index],
                     animation: animation,
                     animationController: animationController,
                   );
@@ -77,19 +77,19 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
   }
 }
 
-class CategoryView extends StatelessWidget {
-  const CategoryView(
+class AchievementView extends StatelessWidget {
+  final void Function(Achievement?)? callback;
+  final Achievement? achievement;
+  final AnimationController? animationController;
+  final Animation<double>? animation;
+
+  const AchievementView(
       {Key? key,
-        this.category,
+        this.achievement,
         this.animationController,
         this.animation,
         this.callback})
       : super(key: key);
-
-  final VoidCallback? callback;
-  final Category? category;
-  final AnimationController? animationController;
-  final Animation<double>? animation;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +103,7 @@ class CategoryView extends StatelessWidget {
                 0.0, 50 * (1.0 - animation!.value), 0.0),
             child: InkWell(
               splashColor: Colors.transparent,
-              onTap: callback,
+              onTap: () => callback!(achievement),
               child: SizedBox(
                 height: 280,
                 child: Stack(
@@ -131,7 +131,7 @@ class CategoryView extends StatelessWidget {
                                             padding: const EdgeInsets.only(
                                                 top: 16, left: 16, right: 16),
                                             child: Text(
-                                              category!.title,
+                                              achievement!.name,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
@@ -156,7 +156,7 @@ class CategoryView extends StatelessWidget {
                                               CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  '${category!.lessonCount} lesson',
+                                                  '#${achievement!.rank}',
                                                   textAlign: TextAlign.left,
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w200,
@@ -170,7 +170,7 @@ class CategoryView extends StatelessWidget {
                                                   child: Row(
                                                     children: <Widget>[
                                                       Text(
-                                                        '${category!.rating}',
+                                                        '${achievement!.score}',
                                                         textAlign:
                                                         TextAlign.left,
                                                         style: TextStyle(
@@ -184,7 +184,7 @@ class CategoryView extends StatelessWidget {
                                                         ),
                                                       ),
                                                       Icon(
-                                                        Icons.star,
+                                                        Icons.grade_sharp,
                                                         color:
                                                         DesignCourseAppTheme
                                                             .nearlyBlue,
@@ -234,7 +234,7 @@ class CategoryView extends StatelessWidget {
                             const BorderRadius.all(Radius.circular(16.0)),
                             child: AspectRatio(
                                 aspectRatio: 1.28,
-                                child: Image.asset(category!.imagePath)),
+                                child: Image.asset(achievement!.picture)),
                           ),
                         ),
                       ),

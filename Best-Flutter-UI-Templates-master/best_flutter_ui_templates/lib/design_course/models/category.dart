@@ -74,4 +74,35 @@ class Category {
       rating: 4.9,
     ),
   ];
+
+  static List<Category> AchievementList = <Category>[
+    Category(
+      imagePath: 'assets/design_course/daily.png',
+      title: 'Every Day Counts!',
+      lessonCount: 12,
+      money: 25,
+      rating: 5,
+    ),
+    Category(
+      imagePath: 'assets/design_course/cando.png',
+      title: 'CAN Do Attitude',
+      lessonCount: 28,
+      money: 208,
+      rating: 10,
+    ),
+    Category(
+      imagePath: 'assets/design_course/cap.png',
+      title: 'No CAP',
+      lessonCount: 12,
+      money: 25,
+      rating: 15,
+    ),
+    Category(
+      imagePath: 'assets/design_course/trash.png',
+      title: 'Trash Can\'t',
+      lessonCount: 28,
+      money: 208,
+      rating: 20,
+    )
+  ];
 }
