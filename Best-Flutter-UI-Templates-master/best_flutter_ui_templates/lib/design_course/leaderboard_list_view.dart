@@ -155,7 +155,7 @@ class PersonView extends StatelessWidget {
                                                   CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  '${person!.school}',
+                                                  '#${person!.rank}',
                                                   textAlign: TextAlign.left,
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w200,

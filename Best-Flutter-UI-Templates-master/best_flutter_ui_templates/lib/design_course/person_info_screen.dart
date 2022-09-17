@@ -19,6 +19,8 @@ class _PersonInfoScreenState extends State<PersonInfoScreen>
   double opacity1 = 0.0;
   double opacity2 = 0.0;
   double opacity3 = 0.0;
+  bool selected = false;
+
   @override
   void initState() {
     animationController = AnimationController(
@@ -158,9 +160,9 @@ class _PersonInfoScreenState extends State<PersonInfoScreen>
                               padding: const EdgeInsets.all(8),
                               child: Row(
                                 children: <Widget>[
-                                  getTimeBoxUI('24', 'Class'),
-                                  getTimeBoxUI('2 hours', 'Time'),
-                                  getTimeBoxUI('24', 'Seat'),
+                                  getTimeBoxUI(widget.person.bottlesRecycled.toString(), 'Bottles'),
+                                  getTimeBoxUI(widget.person.cansRecycled.toString(), 'Cans'),
+                                  getTimeBoxUI(widget.person.CO2Saved.toString(), 'kg of CO2'),
                                 ],
                               ),
                             ),
@@ -282,10 +284,17 @@ class _PersonInfoScreenState extends State<PersonInfoScreen>
                     width: 60,
                     height: 60,
                     child: Center(
-                      child: Icon(
-                        Icons.favorite,
-                        color: DesignCourseAppTheme.nearlyWhite,
-                        size: 30,
+                      child: IconButton(
+                        icon: Icon(
+                          selected ? Icons.favorite : Icons.recycling,
+                          color: DesignCourseAppTheme.nearlyWhite,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            selected = !selected;
+                          });
+                        },
                       ),
                     ),
                   ),
