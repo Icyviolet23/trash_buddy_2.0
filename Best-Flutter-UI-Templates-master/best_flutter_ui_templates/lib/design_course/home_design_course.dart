@@ -146,11 +146,11 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Scanner',
-            textAlign: TextAlign.left,
+            'Bins Near Me!',
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              fontSize: 22,
+              fontSize: 25,
               letterSpacing: 0.27,
               color: DesignCourseAppTheme.darkerText,
             ),
@@ -504,10 +504,11 @@ class _ProgressButtonHomePageState extends State<ProgressButtonHomePage> {
     return Scaffold(
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            Image.asset("assets/design_course/binmap2.png"),
             Container(
-              height: 100,
+              height: 30
             ),
             buildTextWithIcon()
           ],
