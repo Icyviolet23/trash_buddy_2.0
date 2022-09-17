@@ -524,7 +524,11 @@ class _ProgressButtonHomePageState extends State<ProgressButtonHomePage> {
 
             Container(
                 height: 300,
-                child : Image.asset("assets/design_course/bottle_facts.jpg")
+                child : ListView (
+                    scrollDirection: Axis.horizontal,
+                  children: [Image.asset("assets/design_course/PET1.png"), Image.asset("assets/design_course/facts2.png")]
+
+                )
             ),
             Container(
               height: 25
