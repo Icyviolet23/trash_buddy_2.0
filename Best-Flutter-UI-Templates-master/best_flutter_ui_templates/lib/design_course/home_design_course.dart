@@ -187,7 +187,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Scanner',
+            'Achievements',
             textAlign: TextAlign.left,
             style: TextStyle(
               fontWeight: FontWeight.w600,
