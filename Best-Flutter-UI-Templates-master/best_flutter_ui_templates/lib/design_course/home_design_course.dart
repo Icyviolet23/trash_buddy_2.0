@@ -31,7 +31,6 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
                   height: MediaQuery.of(context).size.height,
                   child: Column(
                     children: <Widget>[
-                      getSearchBarUI(),
                       getCategoryUI(),
                       Flexible(
                         child: () {
