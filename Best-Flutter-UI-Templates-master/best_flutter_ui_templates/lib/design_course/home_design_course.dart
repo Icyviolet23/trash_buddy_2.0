@@ -282,14 +282,16 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
               setState(() {
                 categoryType = categoryTypeData;
               });
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CameraScreen((var image) {
-                    setState(() {
-                      this.image = image;
-                    });
-                  }))
-              );
+              if (categoryType == CategoryType.scan) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CameraScreen((var image) {
+                      setState(() {
+                        this.image = image;
+                      });
+                    }))
+                );
+              }
             },
             child: Padding(
               padding: const EdgeInsets.only(
