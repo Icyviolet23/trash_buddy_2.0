@@ -11,7 +11,7 @@ class DesignCourseHomeScreen extends StatefulWidget {
 }
 
 class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
-  CategoryType categoryType = CategoryType.ui;
+  CategoryType categoryType = CategoryType.scan;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,15 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
                       getSearchBarUI(),
                       getCategoryUI(),
                       Flexible(
-                        child: getPopularCourseUI(),
+                        child: () {
+                          if (categoryType == CategoryType.scan) {
+                            return scannerUI();
+                          } else if (categoryType == CategoryType.leaderboard) {
+                            return leaderboardUI();
+                          } else {
+                            return achievementUI();
+                          }
+                        }(),
                       ),
                     ],
                   ),
@@ -72,17 +80,17 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
           padding: const EdgeInsets.only(left: 16, right: 16),
           child: Row(
             children: <Widget>[
-              getButtonUI(CategoryType.ui, categoryType == CategoryType.ui),
+              getButtonUI(CategoryType.scan, categoryType == CategoryType.scan),
               const SizedBox(
                 width: 16,
               ),
               getButtonUI(
-                  CategoryType.coding, categoryType == CategoryType.coding),
+                  CategoryType.leaderboard, categoryType == CategoryType.leaderboard),
               const SizedBox(
                 width: 16,
               ),
               getButtonUI(
-                  CategoryType.basic, categoryType == CategoryType.basic),
+                  CategoryType.achievements, categoryType == CategoryType.achievements),
             ],
           ),
         ),
@@ -98,7 +106,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
     );
   }
 
-  Widget getPopularCourseUI() {
+  Widget leaderboardUI() {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, left: 18, right: 16),
       child: Column(
@@ -107,6 +115,64 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
         children: <Widget>[
           Text(
             'Popular Course',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 22,
+              letterSpacing: 0.27,
+              color: DesignCourseAppTheme.darkerText,
+            ),
+          ),
+          Flexible(
+            child: PopularCourseListView(
+              callBack: () {
+                moveTo();
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget scannerUI() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, left: 18, right: 16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'Scanner',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 22,
+              letterSpacing: 0.27,
+              color: DesignCourseAppTheme.darkerText,
+            ),
+          ),
+          Flexible(
+            child: PopularCourseListView(
+              callBack: () {
+                moveTo();
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget achievementUI() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, left: 18, right: 16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'Scanner',
             textAlign: TextAlign.left,
             style: TextStyle(
               fontWeight: FontWeight.w600,
@@ -138,12 +204,12 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
 
   Widget getButtonUI(CategoryType categoryTypeData, bool isSelected) {
     String txt = '';
-    if (CategoryType.ui == categoryTypeData) {
-      txt = 'Ui/Ux';
-    } else if (CategoryType.coding == categoryTypeData) {
-      txt = 'Coding';
-    } else if (CategoryType.basic == categoryTypeData) {
-      txt = 'Basic UI';
+    if (CategoryType.scan == categoryTypeData) {
+      txt = 'Scanner';
+    } else if (CategoryType.leaderboard == categoryTypeData) {
+      txt = 'Leaderboard';
+    } else if (CategoryType.achievements == categoryTypeData) {
+      txt = 'Achievements';
     }
     return Expanded(
       child: Container(
@@ -172,7 +238,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 12,
+                    fontSize: 9,
                     letterSpacing: 0.27,
                     color: isSelected
                         ? DesignCourseAppTheme.nearlyWhite
@@ -304,7 +370,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
 }
 
 enum CategoryType {
-  ui,
-  coding,
-  basic,
+  scan,
+  leaderboard,
+  achievements,
 }
