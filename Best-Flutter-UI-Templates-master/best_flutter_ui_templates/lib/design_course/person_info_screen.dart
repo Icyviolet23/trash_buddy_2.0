@@ -4,8 +4,10 @@ import 'design_course_app_theme.dart';
 
 class PersonInfoScreen extends StatefulWidget {
   final Person person;
+  final bool selected;
+  final Function(String) toggleSelected;
 
-  PersonInfoScreen(this.person);
+  PersonInfoScreen(this.person, this.selected, this.toggleSelected);
 
   @override
   _PersonInfoScreenState createState() => _PersonInfoScreenState();
@@ -29,6 +31,7 @@ class _PersonInfoScreenState extends State<PersonInfoScreen>
         parent: animationController!,
         curve: Interval(0, 1.0, curve: Curves.fastOutSlowIn)));
     setData();
+    selected = widget.selected;
     super.initState();
   }
 
@@ -114,6 +117,20 @@ class _PersonInfoScreenState extends State<PersonInfoScreen>
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
+                                top: 16, left: 16, right: 16),
+                            child: Text(
+                              "Member since: " + widget.person.joinDate,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w200,
+                                fontSize: 14,
+                                letterSpacing: 0.27,
+                                color: DesignCourseAppTheme.darkerText,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
                                 left: 16, right: 16, bottom: 8, top: 16),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -160,10 +177,32 @@ class _PersonInfoScreenState extends State<PersonInfoScreen>
                               padding: const EdgeInsets.all(8),
                               child: Row(
                                 children: <Widget>[
+                                  Icon(
+                                    Icons.restore_from_trash,
+                                    color: DesignCourseAppTheme.nearlyBlack,
+                                    size: 50,
+                                  ),
+                                  // SizedBox(
+                                  //   width: 16,
+                                  // ),
                                   getTimeBoxUI(widget.person.bottlesRecycled.toString(), 'Bottles'),
                                   getTimeBoxUI(widget.person.cansRecycled.toString(), 'Cans'),
-                                  getTimeBoxUI(widget.person.CO2Saved.toString(), 'kg of CO2'),
+                                  getTimeBoxUI(widget.person.CO2Saved.toString(), 'kg of CO\u2082'),
                                 ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 16, left: 16, right: 16),
+                            child: Text(
+                              "About Me",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                                letterSpacing: 0.27,
+                                color: DesignCourseAppTheme.darkerText,
                               ),
                             ),
                           ),
@@ -175,7 +214,7 @@ class _PersonInfoScreenState extends State<PersonInfoScreen>
                                 padding: const EdgeInsets.only(
                                     left: 16, right: 16, top: 8, bottom: 8),
                                 child: Text(
-                                  'Lorem ipsum is simply dummy text of printing & typesetting industry, Lorem ipsum is simply dummy text of printing & typesetting industry.',
+                                  widget.person.description,
                                   textAlign: TextAlign.justify,
                                   style: TextStyle(
                                     fontWeight: FontWeight.w200,
@@ -183,7 +222,7 @@ class _PersonInfoScreenState extends State<PersonInfoScreen>
                                     letterSpacing: 0.27,
                                     color: DesignCourseAppTheme.grey,
                                   ),
-                                  maxLines: 3,
+                                  maxLines: 5,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -199,29 +238,29 @@ class _PersonInfoScreenState extends State<PersonInfoScreen>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  Container(
-                                    width: 48,
-                                    height: 48,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: DesignCourseAppTheme.nearlyWhite,
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(16.0),
-                                        ),
-                                        border: Border.all(
-                                            color: DesignCourseAppTheme.grey
-                                                .withOpacity(0.2)),
-                                      ),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: DesignCourseAppTheme.nearlyBlue,
-                                        size: 28,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 16,
-                                  ),
+                                  // Container(
+                                  //   width: 48,
+                                  //   height: 48,
+                                  //   child: Container(
+                                  //     decoration: BoxDecoration(
+                                  //       color: DesignCourseAppTheme.nearlyWhite,
+                                  //       borderRadius: const BorderRadius.all(
+                                  //         Radius.circular(16.0),
+                                  //       ),
+                                  //       border: Border.all(
+                                  //           color: DesignCourseAppTheme.grey
+                                  //               .withOpacity(0.2)),
+                                  //     ),
+                                  //     child: Icon(
+                                  //       Icons.add,
+                                  //       color: DesignCourseAppTheme.nearlyBlue,
+                                  //       size: 28,
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  // const SizedBox(
+                                  //   width: 16,
+                                  // ),
                                   Expanded(
                                     child: Container(
                                       height: 48,
@@ -241,7 +280,7 @@ class _PersonInfoScreenState extends State<PersonInfoScreen>
                                       ),
                                       child: Center(
                                         child: Text(
-                                          'Join Course',
+                                          'Message User',
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
@@ -284,17 +323,21 @@ class _PersonInfoScreenState extends State<PersonInfoScreen>
                     width: 60,
                     height: 60,
                     child: Center(
-                      child: IconButton(
-                        icon: Icon(
-                          selected ? Icons.favorite : Icons.recycling,
-                          color: DesignCourseAppTheme.nearlyWhite,
-                          size: 30,
+                      child: Tooltip(
+                        message: selected ? "Unfollow User" : "Follow User",
+                        child: IconButton(
+                          icon: Icon(
+                            selected ? Icons.check : Icons.favorite,
+                            color: DesignCourseAppTheme.nearlyWhite,
+                            size: 30,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              selected = !selected;
+                              widget.toggleSelected(widget.person.name);
+                            });
+                          },
                         ),
-                        onPressed: () {
-                          setState(() {
-                            selected = !selected;
-                          });
-                        },
                       ),
                     ),
                   ),

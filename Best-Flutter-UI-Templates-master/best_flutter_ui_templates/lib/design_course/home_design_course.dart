@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:best_flutter_ui_templates/design_course/category_list_view.dart';
 import 'package:best_flutter_ui_templates/design_course/course_info_screen.dart';
 import 'package:best_flutter_ui_templates/design_course/person_info_screen.dart';
 import 'package:best_flutter_ui_templates/design_course/popular_course_list_view.dart';
@@ -12,6 +11,8 @@ import 'design_course_app_theme.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
 
+import 'favorites_list_view.dart';
+
 class DesignCourseHomeScreen extends StatefulWidget {
   @override
   _DesignCourseHomeScreenState createState() => _DesignCourseHomeScreenState();
@@ -19,6 +20,16 @@ class DesignCourseHomeScreen extends StatefulWidget {
 
 class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
   CategoryType categoryType = CategoryType.scan;
+
+  Set<String> selected = Set();
+
+  toggleSelected(String name) {
+    if (selected.contains(name)) {
+      selected.remove(name);
+    } else {
+      selected.add(name);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,19 +77,19 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 18, right: 16),
-          child: Text(
-            'Category',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 22,
-              letterSpacing: 0.27,
-              color: DesignCourseAppTheme.darkerText,
-            ),
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.only(top: 8.0, left: 18, right: 16),
+        //   child: Text(
+        //     'Category',
+        //     textAlign: TextAlign.left,
+        //     style: TextStyle(
+        //       fontWeight: FontWeight.w600,
+        //       fontSize: 22,
+        //       letterSpacing: 0.27,
+        //       color: DesignCourseAppTheme.darkerText,
+        //     ),
+        //   ),
+        // ),
         const SizedBox(
           height: 16,
         ),
@@ -103,9 +114,10 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
         const SizedBox(
           height: 16,
         ),
-        CategoryListView(
-          callBack: () {
-            moveTo();
+        FavoritesListView(
+          callBack: (Person? person) {
+            if (person != null)
+              moveToPerson(person);
           },
         ),
       ],
@@ -209,7 +221,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
     Navigator.push<dynamic>(
       context,
       MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => PersonInfoScreen(person),
+        builder: (BuildContext context) => PersonInfoScreen(person, selected.contains(person.name), toggleSelected),
       ),
     );
   }
@@ -347,18 +359,18 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                // Text(
+                //   'Trash Buddy',
+                //   textAlign: TextAlign.left,
+                //   style: TextStyle(
+                //     fontWeight: FontWeight.w400,
+                //     fontSize: 14,
+                //     letterSpacing: 0.2,
+                //     color: DesignCourseAppTheme.grey,
+                //   ),
+                // ),
                 Text(
-                  'Choose your',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    letterSpacing: 0.2,
-                    color: DesignCourseAppTheme.grey,
-                  ),
-                ),
-                Text(
-                  'Design Course',
+                  'Trash Buddy',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
