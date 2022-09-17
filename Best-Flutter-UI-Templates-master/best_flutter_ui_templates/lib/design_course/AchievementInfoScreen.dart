@@ -155,20 +155,20 @@ class _AchievementInfoScreenState extends State<AchievementInfoScreen>
                               ],
                             ),
                           ),
-                          AnimatedOpacity(
-                            duration: const Duration(milliseconds: 500),
-                            opacity: opacity1,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Row(
-                                children: <Widget>[
-                                  getTimeBoxUI(widget.achievement.stat1.toString(), 'Bottles'),
-                                  getTimeBoxUI(widget.achievement.stat2.toString(), 'Cans'),
-                                  getTimeBoxUI(widget.achievement.stat3.toString(), 'kg of CO2'),
-                                ],
-                              ),
-                            ),
-                          ),
+                          // AnimatedOpacity(
+                          //   duration: const Duration(milliseconds: 500),
+                          //   opacity: opacity1,
+                          //   child: Padding(
+                          //     padding: const EdgeInsets.all(8),
+                          //     child: Row(
+                          //       children: <Widget>[
+                          //         getTimeBoxUI(widget.achievement.stat1.toString(), 'Bottles'),
+                          //         getTimeBoxUI(widget.achievement.stat2.toString(), 'Cans'),
+                          //         getTimeBoxUI(widget.achievement.stat3.toString(), 'kg of CO2'),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
                           Expanded(
                             child: AnimatedOpacity(
                               duration: const Duration(milliseconds: 500),
@@ -201,29 +201,29 @@ class _AchievementInfoScreenState extends State<AchievementInfoScreen>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  Container(
-                                    width: 48,
-                                    height: 48,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: DesignCourseAppTheme.nearlyWhite,
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(16.0),
-                                        ),
-                                        border: Border.all(
-                                            color: DesignCourseAppTheme.grey
-                                                .withOpacity(0.2)),
-                                      ),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: DesignCourseAppTheme.nearlyBlue,
-                                        size: 28,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 16,
-                                  ),
+                                  // Container(
+                                  //   width: 48,
+                                  //   height: 48,
+                                  //   child: Container(
+                                  //     decoration: BoxDecoration(
+                                  //       color: DesignCourseAppTheme.nearlyWhite,
+                                  //       borderRadius: const BorderRadius.all(
+                                  //         Radius.circular(16.0),
+                                  //       ),
+                                  //       border: Border.all(
+                                  //           color: DesignCourseAppTheme.grey
+                                  //               .withOpacity(0.2)),
+                                  //     ),
+                                  //     child: Icon(
+                                  //       Icons.add,
+                                  //       color: DesignCourseAppTheme.nearlyBlue,
+                                  //       size: 28,
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  // const SizedBox(
+                                  //   width: 16,
+                                  // ),
                                   Expanded(
                                     child: Container(
                                       height: 48,
@@ -288,7 +288,7 @@ class _AchievementInfoScreenState extends State<AchievementInfoScreen>
                     child: Center(
                       child: IconButton(
                         icon: Icon(
-                          selected ? Icons.favorite : Icons.grade_sharp,
+                          selected ? Icons.check : Icons.grade_sharp,
                           color: DesignCourseAppTheme.nearlyWhite,
                           size: 30,
                         ),
