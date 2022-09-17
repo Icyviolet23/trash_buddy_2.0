@@ -2,10 +2,8 @@ import 'dart:math';
 
 import 'package:best_flutter_ui_templates/design_course/AchievementInfoScreen.dart';
 import 'package:best_flutter_ui_templates/design_course/AchievementListView.dart';
-import 'package:best_flutter_ui_templates/design_course/category_list_view.dart';
 import 'package:best_flutter_ui_templates/design_course/course_info_screen.dart';
 import 'package:best_flutter_ui_templates/design_course/person_info_screen.dart';
-import 'package:best_flutter_ui_templates/design_course/popular_course_list_view.dart';
 import 'package:best_flutter_ui_templates/design_course/leaderboard_list_view.dart';
 import 'package:best_flutter_ui_templates/design_course/models/person.dart';
 import 'package:best_flutter_ui_templates/main.dart';
@@ -120,6 +118,19 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
         ),
         const SizedBox(
           height: 16,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0, left: 18, right: 16),
+          child: Text(
+            'Following',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 22,
+              letterSpacing: 0.27,
+              color: DesignCourseAppTheme.darkerText,
+            ),
+          ),
         ),
         FavoritesListView(
           callBack: (Person? person) {

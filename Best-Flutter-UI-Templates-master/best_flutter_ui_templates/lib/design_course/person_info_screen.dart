@@ -105,7 +105,7 @@ class _PersonInfoScreenState extends State<PersonInfoScreen>
                             padding: const EdgeInsets.only(
                                 top: 32.0, left: 18, right: 16),
                             child: Text(
-                              widget.person.name,
+                              '${widget.person.name} (#${widget.person.rank})',
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,

@@ -223,27 +223,27 @@ class FavoritesView extends StatelessWidget {
                                                         .nearlyBlue,
                                                   ),
                                                 ),
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    color: DesignCourseAppTheme
-                                                        .nearlyBlue,
-                                                    borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(
-                                                            8.0)),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                    const EdgeInsets.all(
-                                                        4.0),
-                                                    child: Icon(
-                                                      Icons.add,
-                                                      color:
-                                                      DesignCourseAppTheme
-                                                          .nearlyWhite,
-                                                    ),
-                                                  ),
-                                                )
+                                                // Container(
+                                                //   decoration: BoxDecoration(
+                                                //     color: DesignCourseAppTheme
+                                                //         .nearlyBlue,
+                                                //     borderRadius:
+                                                //     const BorderRadius.all(
+                                                //         Radius.circular(
+                                                //             8.0)),
+                                                //   ),
+                                                //   child: Padding(
+                                                //     padding:
+                                                //     const EdgeInsets.all(
+                                                //         4.0),
+                                                //     child: Icon(
+                                                //       Icons.add,
+                                                //       color:
+                                                //       DesignCourseAppTheme
+                                                //           .nearlyWhite,
+                                                //     ),
+                                                //   ),
+                                                // )
                                               ],
                                             ),
                                           ),
