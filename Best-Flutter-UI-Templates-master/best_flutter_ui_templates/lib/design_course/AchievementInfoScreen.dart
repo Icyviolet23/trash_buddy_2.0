@@ -31,6 +31,7 @@ class _AchievementInfoScreenState extends State<AchievementInfoScreen>
         parent: animationController!,
         curve: Interval(0, 1.0, curve: Curves.fastOutSlowIn)));
     setData();
+    selected = widget.selected;
     super.initState();
   }
 
@@ -295,6 +296,7 @@ class _AchievementInfoScreenState extends State<AchievementInfoScreen>
                         onPressed: () {
                           setState(() {
                             selected = !selected;
+                            widget.toggleSelected(widget.achievement.name);
                           });
                         },
                       ),
