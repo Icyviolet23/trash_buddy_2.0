@@ -2,7 +2,10 @@ import 'dart:math';
 
 import 'package:best_flutter_ui_templates/design_course/category_list_view.dart';
 import 'package:best_flutter_ui_templates/design_course/course_info_screen.dart';
+import 'package:best_flutter_ui_templates/design_course/person_info_screen.dart';
 import 'package:best_flutter_ui_templates/design_course/popular_course_list_view.dart';
+import 'package:best_flutter_ui_templates/design_course/leaderboard_list_view.dart';
+import 'package:best_flutter_ui_templates/design_course/models/person.dart';
 import 'package:best_flutter_ui_templates/main.dart';
 import 'package:flutter/material.dart';
 import 'design_course_app_theme.dart';
@@ -117,7 +120,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Popular Course',
+            'Leaderboard',
             textAlign: TextAlign.left,
             style: TextStyle(
               fontWeight: FontWeight.w600,
@@ -127,9 +130,10 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
             ),
           ),
           Flexible(
-            child: PopularCourseListView(
-              callBack: () {
-                moveTo();
+            child: LeaderboardListView(
+              callBack: (Person? person) {
+                if (person != null)
+                  moveToPerson(person);
               },
             ),
           )
@@ -197,6 +201,15 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
       context,
       MaterialPageRoute<dynamic>(
         builder: (BuildContext context) => CourseInfoScreen(),
+      ),
+    );
+  }
+
+  void moveToPerson(Person person) {
+    Navigator.push<dynamic>(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => PersonInfoScreen(person),
       ),
     );
   }

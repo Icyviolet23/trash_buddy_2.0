@@ -1,17 +1,18 @@
 import 'package:best_flutter_ui_templates/design_course/design_course_app_theme.dart';
-import 'package:best_flutter_ui_templates/design_course/models/category.dart';
+import 'package:best_flutter_ui_templates/design_course/models/person.dart';
 import 'package:best_flutter_ui_templates/main.dart';
 import 'package:flutter/material.dart';
 
-class PopularCourseListView extends StatefulWidget {
-  const PopularCourseListView({Key? key, this.callBack}) : super(key: key);
+class LeaderboardListView extends StatefulWidget {
+  final void Function(Person?)? callBack;
 
-  final Function()? callBack;
+  const LeaderboardListView({Key? key, this.callBack}) : super(key: key);
+
   @override
-  _PopularCourseListViewState createState() => _PopularCourseListViewState();
+  _LeaderboardListViewState createState() => _LeaderboardListViewState();
 }
 
-class _PopularCourseListViewState extends State<PopularCourseListView>
+class _LeaderboardListViewState extends State<LeaderboardListView>
     with TickerProviderStateMixin {
   AnimationController? animationController;
   @override
@@ -41,11 +42,11 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               children: List<Widget>.generate(
-                Category.popularCourseList.length,
-                    (int index) {
-                  final int count = Category.popularCourseList.length;
+                Person.leaderboardList.length,
+                (int index) {
+                  final int count = Person.leaderboardList.length;
                   final Animation<double> animation =
-                  Tween<double>(begin: 0.0, end: 1.0).animate(
+                      Tween<double>(begin: 0.0, end: 1.0).animate(
                     CurvedAnimation(
                       parent: animationController!,
                       curve: Interval((1 / count) * index, 1.0,
@@ -53,9 +54,9 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
                     ),
                   );
                   animationController?.forward();
-                  return CategoryView(
+                  return PersonView(
                     callback: widget.callBack,
-                    category: Category.popularCourseList[index],
+                    person: Person.leaderboardList[index],
                     animation: animation,
                     animationController: animationController,
                   );
@@ -75,17 +76,17 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
   }
 }
 
-class CategoryView extends StatelessWidget {
-  const CategoryView(
+class PersonView extends StatelessWidget {
+  const PersonView(
       {Key? key,
-        this.category,
-        this.animationController,
-        this.animation,
-        this.callback})
+      this.person,
+      this.animationController,
+      this.animation,
+      this.callback})
       : super(key: key);
 
-  final VoidCallback? callback;
-  final Category? category;
+  final void Function(Person?)? callback;
+  final Person? person;
   final AnimationController? animationController;
   final Animation<double>? animation;
 
@@ -101,7 +102,7 @@ class CategoryView extends StatelessWidget {
                 0.0, 50 * (1.0 - animation!.value), 0.0),
             child: InkWell(
               splashColor: Colors.transparent,
-              onTap: callback,
+              onTap: () => callback!(person),
               child: SizedBox(
                 height: 280,
                 child: Stack(
@@ -129,7 +130,7 @@ class CategoryView extends StatelessWidget {
                                             padding: const EdgeInsets.only(
                                                 top: 16, left: 16, right: 16),
                                             child: Text(
-                                              category!.title,
+                                              person!.name,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
@@ -148,13 +149,13 @@ class CategoryView extends StatelessWidget {
                                                 bottom: 8),
                                             child: Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment
-                                                  .spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                                  CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  '${category!.lessonCount} lesson',
+                                                  '${person!.school}',
                                                   textAlign: TextAlign.left,
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w200,
@@ -168,24 +169,24 @@ class CategoryView extends StatelessWidget {
                                                   child: Row(
                                                     children: <Widget>[
                                                       Text(
-                                                        '${category!.rating}',
+                                                        '${person!.score}',
                                                         textAlign:
-                                                        TextAlign.left,
+                                                            TextAlign.left,
                                                         style: TextStyle(
                                                           fontWeight:
-                                                          FontWeight.w200,
+                                                              FontWeight.w200,
                                                           fontSize: 18,
                                                           letterSpacing: 0.27,
                                                           color:
-                                                          DesignCourseAppTheme
-                                                              .grey,
+                                                              DesignCourseAppTheme
+                                                                  .grey,
                                                         ),
                                                       ),
                                                       Icon(
-                                                        Icons.star,
+                                                        Icons.recycling,
                                                         color:
-                                                        DesignCourseAppTheme
-                                                            .nearlyBlue,
+                                                            DesignCourseAppTheme
+                                                                .nearlyBlue,
                                                         size: 20,
                                                       ),
                                                     ],
@@ -214,11 +215,11 @@ class CategoryView extends StatelessWidget {
                     Container(
                       child: Padding(
                         padding:
-                        const EdgeInsets.only(top: 24, right: 16, left: 16),
+                            const EdgeInsets.only(top: 24, right: 16, left: 16),
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius:
-                            const BorderRadius.all(Radius.circular(16.0)),
+                                const BorderRadius.all(Radius.circular(16.0)),
                             boxShadow: <BoxShadow>[
                               BoxShadow(
                                   color: DesignCourseAppTheme.grey
@@ -229,10 +230,10 @@ class CategoryView extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius:
-                            const BorderRadius.all(Radius.circular(16.0)),
+                                const BorderRadius.all(Radius.circular(16.0)),
                             child: AspectRatio(
                                 aspectRatio: 1.28,
-                                child: Image.asset(category!.imagePath)),
+                                child: Image.asset(person!.picture)),
                           ),
                         ),
                       ),

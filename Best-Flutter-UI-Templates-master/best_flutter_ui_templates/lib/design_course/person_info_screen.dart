@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:best_flutter_ui_templates/design_course/models/person.dart';
 import 'design_course_app_theme.dart';
 
-class CourseInfoScreen extends StatefulWidget {
+class PersonInfoScreen extends StatefulWidget {
+  final Person person;
+
+  PersonInfoScreen(this.person);
+
   @override
-  _CourseInfoScreenState createState() => _CourseInfoScreenState();
+  _PersonInfoScreenState createState() => _PersonInfoScreenState();
 }
 
-class _CourseInfoScreenState extends State<CourseInfoScreen>
+class _PersonInfoScreenState extends State<PersonInfoScreen>
     with TickerProviderStateMixin {
   final double infoHeight = 364.0;
   AnimationController? animationController;
@@ -56,7 +61,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
               children: <Widget>[
                 AspectRatio(
                   aspectRatio: 1.2,
-                  child: Image.asset('assets/design_course/webInterFace.png'),
+                  child: Image.asset(widget.person.picture),
                 ),
               ],
             ),
@@ -95,7 +100,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                             padding: const EdgeInsets.only(
                                 top: 32.0, left: 18, right: 16),
                             child: Text(
-                              'Web Design\nCourse',
+                              widget.person.name,
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
@@ -113,7 +118,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  '\$28.99',
+                                  widget.person.school,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     fontWeight: FontWeight.w200,
@@ -126,7 +131,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                   child: Row(
                                     children: <Widget>[
                                       Text(
-                                        '4.3',
+                                        widget.person.score.toString(),
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w200,
@@ -136,7 +141,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                         ),
                                       ),
                                       Icon(
-                                        Icons.star,
+                                        Icons.recycling,
                                         color: DesignCourseAppTheme.nearlyBlue,
                                         size: 24,
                                       ),
@@ -153,8 +158,8 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                               padding: const EdgeInsets.all(8),
                               child: Row(
                                 children: <Widget>[
-                                  getTimeBoxUI('24', 'Classe'),
-                                  getTimeBoxUI('2hours', 'Time'),
+                                  getTimeBoxUI('24', 'Class'),
+                                  getTimeBoxUI('2 hours', 'Time'),
                                   getTimeBoxUI('24', 'Seat'),
                                 ],
                               ),
@@ -296,7 +301,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                   color: Colors.transparent,
                   child: InkWell(
                     borderRadius:
-                    BorderRadius.circular(AppBar().preferredSize.height),
+                        BorderRadius.circular(AppBar().preferredSize.height),
                     child: Icon(
                       Icons.arrow_back_ios,
                       color: DesignCourseAppTheme.nearlyBlack,
