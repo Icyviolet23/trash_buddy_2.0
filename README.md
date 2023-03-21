@@ -4,7 +4,7 @@
 
 Our mobile app uses gamification to incentivize users to dispose of recyclables in the correct manner. Our app can scan recyclables to determine if they are recyclable and can assist users in determining the nearest recycling bin from them through visualization on a  google map. We make use of leaderboards and scoreboards in order to pit players against each other.
 
-## How we build it
+## How we built it
 
 The entire skeleton of the app was made using Flutter - an open source UI development kit for mobile applications. 
 
